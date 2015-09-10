@@ -28,6 +28,8 @@ class GMapViewController: BaseViewController, CLLocationManagerDelegate {
     var sumDistance = Double()
     var infoTextLabel = UILabel()
     
+    let myRecord = Record()     //Realmのデータ保持オブジェクト
+    
     required init(coder aDecoder: NSCoder) {
         // GoogleDevelopperのAPIキー
         // AppDelegateだと上手くいかない。（AppDelegateよりinitが先に呼ばれる？）
@@ -229,6 +231,10 @@ class GMapViewController: BaseViewController, CLLocationManagerDelegate {
     func polylineDrow() {
         targetPath.addLatitude(latitude, longitude: longitude)
         poliLine.path = targetPath
+        let polylineRecord = PolylineArray()
+        polylineRecord.poliLineLatitude = latitude
+        polylineRecord.poliLineLongitude = longitude
+        myRecord.polyLine.append(polylineRecord)
     }
 
     // 描画した軌跡と総距離をクリア
@@ -252,10 +258,7 @@ class GMapViewController: BaseViewController, CLLocationManagerDelegate {
             //      その時にstopするかを聞くようなアラートを出しても良いかも。
             super.mappingStarted = false
             // realmにデータを保存
-            let myRecord = Record()
             myRecord.distance = sumDistance
-            myRecord.average = 0.0
-            // myRecord.polyLine = poliLine
             myRecord.createdDate = NSDate().timeIntervalSince1970
             let realm = Realm()
             realm.beginWrite()
