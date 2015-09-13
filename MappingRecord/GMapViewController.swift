@@ -28,7 +28,11 @@ class GMapViewController: BaseViewController, CLLocationManagerDelegate {
     var sumDistance = Double()
     var infoTextLabel = UILabel()
     
-    let myRecord = Record()     //Realmのデータ保持オブジェクト
+    let realm = Realm()         //Realm操作オブジェクト
+    var myRecordSeqNo = Int()
+    var startDate = NSDate()
+    var polyLineList = [PolylineArray]()
+    
     
     required init(coder aDecoder: NSCoder) {
         // GoogleDevelopperのAPIキー
@@ -234,7 +238,7 @@ class GMapViewController: BaseViewController, CLLocationManagerDelegate {
         let polylineRecord = PolylineArray()
         polylineRecord.poliLineLatitude = latitude
         polylineRecord.poliLineLongitude = longitude
-        myRecord.polyLine.append(polylineRecord)
+        polyLineList.append(polylineRecord)
     }
 
     // 描画した軌跡と総距離をクリア
@@ -253,21 +257,40 @@ class GMapViewController: BaseViewController, CLLocationManagerDelegate {
     // SpringButtonにアニメーションを設定し実行後、マッピング開始フラグをオンorオフする。
         sender.animation = "pop"
         sender.animate()
+        if (self.tabBarController?.selectedViewController != self) {
+            self.tabBarController?.selectedViewController = self
+        }
         if super.mappingStarted {
             // TODO ここに移動距離と、どこからどこまでと、平均速度、その時のpolylineなどをどっかに記録する処理を追加する
             //      その時にstopするかを聞くようなアラートを出しても良いかも。
             super.mappingStarted = false
             // realmにデータを保存
+            let myRecord = Record()     //Realmのデータ保持オブジェクト
             myRecord.distance = sumDistance
+            myRecord.endDate = NSDate()
             myRecord.createdDate = NSDate().timeIntervalSince1970
-            let realm = Realm()
+            for polyLineArray in polyLineList {
+                myRecord.polyLine.append(polyLineArray)
+            }
             realm.beginWrite()
             realm.add(myRecord)
             realm.commitWrite()
+            polyLineList.removeAll()
         } else {
             self.mappingRestarted()
             self.polylineDrow()
             super.mappingStarted = true
+            let predicate = NSPredicate(format: "seqNo = 999999")
+            var maxSeqNoRecords = realm.objects(Record).filter(predicate)
+            if (maxSeqNoRecords.count != 0) {
+                for maxSeqNoRecord in maxSeqNoRecords {
+                    myRecordSeqNo = maxSeqNoRecord.seqNo + 1
+                    break
+                }
+            } else {
+                myRecordSeqNo = 1
+            }
+            startDate = NSDate()
         }
     }
     

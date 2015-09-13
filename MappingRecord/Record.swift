@@ -18,6 +18,9 @@ import GoogleMaps
 */
 class Record: Object {
     
+    dynamic var seqNo: Int = 0
+    dynamic var startDate: NSDate = NSDate()
+    dynamic var endDate: NSDate = NSDate()
     dynamic var distance: Double = 0
     dynamic var polyLine = List<PolylineArray>()
     dynamic var average: Double = 0

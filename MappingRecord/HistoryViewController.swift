@@ -8,14 +8,13 @@
 
 //import Foundation
 import UIKit
+import Spring
+import RealmSwift
 
-class HistoryViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource  {
+class HistoryViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource {
     
     init() {
         super.init(nibName: nil, bundle: nil)
-        
-        // Viewの背景色をGreenに設定する.
-        self.view.backgroundColor = UIColor.greenColor()
         
         // tabBarItemのアイコンをFeaturedに、タグを2と定義する.
         self.tabBarItem = UITabBarItem(tabBarSystemItem: UITabBarSystemItem.Featured, tag: 2)
@@ -34,37 +33,93 @@ class HistoryViewController: BaseViewController, UITableViewDelegate, UITableVie
     var tableView: UITableView  =   UITableView()
     
     //テーブルに表示するセル配列
-    var items: [String] = ["走行履歴１", "走行履歴２", "走行履歴３","走行履歴４","走行履歴５"]
+//    var items: Dictionary<Int,String> = [:]
+    var items: Array<String> = []
+    var seqNos: Array<Int> = []
+    
+    let dateFormatter = NSDateFormatter()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        super.appendCenterButton()
+//        super.appendCenterButton()
         
-        //テーブルビュー初期化、関連付け
-        tableView.frame         =   CGRectMake(0, 0, 600, 240);
-        tableView.delegate      =   self
-        tableView.dataSource    =   self
-        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        self.setItemsValue(self.getRecords())
+        
+        let barHeight: CGFloat = UIApplication.sharedApplication().statusBarFrame.size.height
+        
+        // Viewの高さと幅を取得する.
+        let displayWidth: CGFloat = self.view.frame.width
+        let displayHeight: CGFloat = self.view.frame.height
+        
+        // TableViewの生成する(status barの高さ分ずらして表示).
+        tableView = UITableView(frame: CGRect(x: 0, y: barHeight, width: displayWidth, height: displayHeight - barHeight))
+        
+        // Cell名の登録をおこなう.
+        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "MyCell")
+        
+        // DataSourceの設定をする.
+        tableView.dataSource = self
+        
+        // Delegateを設定する.
+        tableView.delegate = self
+        
+        // Viewに追加する.
         self.view.addSubview(tableView)
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.items.count
+    func getRecords() -> Results<Record> {
+        let records = Realm().objects(Record)
+        return records
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell:UITableViewCell = tableView.dequeueReusableCellWithIdentifier("cell") as! UITableViewCell
-        cell.textLabel?.text = self.items[indexPath.row]
-        return cell
+    func setItemsValue(records: Results<Record>) {
+        dateFormatter.locale = NSLocale(localeIdentifier: "ja_JP") // ロケールの設定
+        dateFormatter.timeStyle = .ShortStyle
+        dateFormatter.dateStyle = .ShortStyle
+//            items[record.seqNo] = record.distance.description
+        for record in records {
+            items.append("Date:\(dateFormatter.stringFromDate(record.startDate)) Total:\(record.distance.description)")
+            seqNos.append(record.seqNo)
+        }
     }
-    
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        println("セルを選択しました！ #\(indexPath.row)!")
-    }
-    
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
+
+    /*
+    Cellが選択された際に呼び出されるデリゲートメソッド.
+    */
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+//        println("Num: \(indexPath.row)")
+//        println("Value: \(myItems[indexPath.row])")
+    }
+    
+    /*
+    Cellの総数を返すデータソースメソッド.
+    (実装必須)
+    */
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return items.count
+    }
+    
+    /*
+    Cellに値を設定するデータソースメソッド.
+    (実装必須)
+    */
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        
+        // 再利用するCellを取得する.
+        let cell = tableView.dequeueReusableCellWithIdentifier("MyCell", forIndexPath: indexPath) as! UITableViewCell
+        cell.textLabel?.numberOfLines = 2
+        // Cellに値を設定する.
+        cell.textLabel!.text = "\(items[indexPath.row])"
+        cell.tag = seqNos[indexPath.row]
+        
+        return cell
+    }
+        
 }
 

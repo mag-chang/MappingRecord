@@ -28,10 +28,13 @@ class BaseViewController: UIViewController {
     }
 
     @IBAction func onClickSpButton(sender: SpringButton) {
-//        // SpringButtonにアニメーションを設定し実行後、マッピング開始フラグをオンorオフする。
-//        sender.animation = "pop"
-//        sender.animate()
-//        if self.mappingStarted {
+        // SpringButtonにアニメーションを設定し実行後、マッピング開始フラグをオンorオフする。
+        sender.animation = "pop"
+        sender.animate()
+        //AppDelegateのインスタンスを取得
+        var appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        
+        //        if self.mappingStarted {
 //            mappingStarted = false
 //        } else {
 //            mappingStarted = true

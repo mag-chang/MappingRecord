@@ -14,12 +14,14 @@ import RealmSwift
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
-    private var myTabBarController: UITabBarController!
-    
-    // Tabに設定するViewControllerのインスタンスを生成.
-    let myFirstTab: UIViewController = GMapViewController()
-    let mySecondTab: UIViewController = HistoryViewController()
-    
+//    private var myTabBarController: UITabBarController!
+//    
+//    // Tabに設定するViewControllerのインスタンスを生成.
+//    let gmapViewTab: UIViewController = GMapViewController()
+//    let historyTab: UIViewController = HistoryViewController()
+
+    var myTabBarController: UITabBarController = CustomTabBarController()
+
     /*
     アプリケーション起動時に呼ばれるメソッド.
     */
@@ -29,15 +31,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
         
-        // タブを要素に持つArrayの.を作成する.
-        let myTabs = NSArray(objects: myFirstTab,mySecondTab)
-        
-        // UITabControllerの作成する.
-        myTabBarController = UITabBarController()
-        
-        // ViewControllerを設定する.
-        myTabBarController?.setViewControllers(myTabs as [AnyObject], animated: false)
-        
+//        // タブを要素に持つArrayの.を作成する.
+//        let myTabs = NSArray(objects: gmapViewTab,historyTab)
+//        
+//        // UITabControllerの作成する.
+//        myTabBarController = UITabBarController()
+//        
+//        // ViewControllerを設定する.
+//        myTabBarController?.setViewControllers(myTabs as [AnyObject], animated: false)
+//        
         // RootViewControllerに設定する.
         self.window!.rootViewController = myTabBarController
         
