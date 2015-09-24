@@ -17,6 +17,7 @@
 		780B23181B9B22350068CCE5 /* HistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 780B23141B9B22350068CCE5 /* HistoryViewController.swift */; };
 		780B23191B9B22350068CCE5 /* pencil.png in Resources */ = {isa = PBXBuildFile; fileRef = 780B23151B9B22350068CCE5 /* pencil.png */; };
 		784240741B9B256E00059B95 /* Record.swift in Sources */ = {isa = PBXBuildFile; fileRef = 784240731B9B256E00059B95 /* Record.swift */; };
+		7872C7DA1BA547E300B41B76 /* CustomTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7872C7D91BA547E300B41B76 /* CustomTabBarController.swift */; };
 		8042F6C0D03F39D0B35E4647 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 21052CA22F2D8F799787B14F /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 /* End PBXBuildFile section */
 
@@ -46,6 +47,7 @@
 		780B23141B9B22350068CCE5 /* HistoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryViewController.swift; sourceTree = "<group>"; };
 		780B23151B9B22350068CCE5 /* pencil.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pencil.png; sourceTree = "<group>"; };
 		784240731B9B256E00059B95 /* Record.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Record.swift; sourceTree = "<group>"; };
+		7872C7D91BA547E300B41B76 /* CustomTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTabBarController.swift; sourceTree = "<group>"; };
 		D603B1E913B3520567D79E7F /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		F7AF217CB025B564D5977159 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -93,6 +95,7 @@
 			isa = PBXGroup;
 			children = (
 				780B23121B9B22350068CCE5 /* BaseViewController.swift */,
+				7872C7D91BA547E300B41B76 /* CustomTabBarController.swift */,
 				780B23131B9B22350068CCE5 /* GMapViewController.swift */,
 				784240731B9B256E00059B95 /* Record.swift */,
 				780B23141B9B22350068CCE5 /* HistoryViewController.swift */,
@@ -195,7 +198,8 @@
 		780B22E51B9B21C50068CCE5 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0640;
+				LastSwiftUpdateCheck = 0700;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Hiroki Nakajima";
 				TargetAttributes = {
 					780B22EC1B9B21C50068CCE5 = {
@@ -302,6 +306,7 @@
 			files = (
 				780B22F31B9B21C50068CCE5 /* AppDelegate.swift in Sources */,
 				780B23161B9B22350068CCE5 /* BaseViewController.swift in Sources */,
+				7872C7DA1BA547E300B41B76 /* CustomTabBarController.swift in Sources */,
 				784240741B9B256E00059B95 /* Record.swift in Sources */,
 				780B23181B9B22350068CCE5 /* HistoryViewController.swift in Sources */,
 				780B23171B9B22350068CCE5 /* GMapViewController.swift in Sources */,
@@ -367,6 +372,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -434,6 +440,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = MappingRecord/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.test.MyFirstApp.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -445,6 +452,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = MappingRecord/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.test.MyFirstApp.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -463,6 +471,7 @@
 				);
 				INFOPLIST_FILE = MappingRecordTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.test.MyFirstApp.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MappingRecord.app/MappingRecord";
 			};
@@ -478,6 +487,7 @@
 				);
 				INFOPLIST_FILE = MappingRecordTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.test.MyFirstApp.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MappingRecord.app/MappingRecord";
 			};
