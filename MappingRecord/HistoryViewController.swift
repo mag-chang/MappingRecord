@@ -21,7 +21,7 @@ class HistoryViewController: BaseViewController, UITableViewDelegate, UITableVie
     }
     
     required init(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+        super.init(coder: aDecoder)!
     }
     
     required override init(nibName nibNameOrNil: String!, bundle nibBundleOrNil: NSBundle!) {
@@ -36,6 +36,8 @@ class HistoryViewController: BaseViewController, UITableViewDelegate, UITableVie
 //    var items: Dictionary<Int,String> = [:]
     var items: Array<String> = []
     var seqNos: Array<Int> = []
+    // ↓SeqNoが特定できるまでの仮キー
+    var dateTime: Array<Double> = []
     
     let dateFormatter = NSDateFormatter()
     
@@ -70,7 +72,7 @@ class HistoryViewController: BaseViewController, UITableViewDelegate, UITableVie
     }
     
     func getRecords() -> Results<Record> {
-        let records = Realm().objects(Record)
+        let records = try! Realm().objects(Record)
         return records
     }
     
@@ -82,6 +84,7 @@ class HistoryViewController: BaseViewController, UITableViewDelegate, UITableVie
         for record in records {
             items.append("Date:\(dateFormatter.stringFromDate(record.startDate)) Total:\(record.distance.description)")
             seqNos.append(record.seqNo)
+            dateTime.append(record.createdDate)
         }
     }
 
@@ -93,8 +96,9 @@ class HistoryViewController: BaseViewController, UITableViewDelegate, UITableVie
     Cellが選択された際に呼び出されるデリゲートメソッド.
     */
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-//        println("Num: \(indexPath.row)")
-//        println("Value: \(myItems[indexPath.row])")
+        self.tabBarController?.selectedIndex = 0
+        let seqNo = self.tableView.cellForRowAtIndexPath(indexPath)!.textLabel?.text
+//        self.tabBarController?.selectedViewController?.targetViewControllerForAction("aaa", sender: seqNo)
     }
     
     /*
@@ -112,11 +116,12 @@ class HistoryViewController: BaseViewController, UITableViewDelegate, UITableVie
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         // 再利用するCellを取得する.
-        let cell = tableView.dequeueReusableCellWithIdentifier("MyCell", forIndexPath: indexPath) as! UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("MyCell", forIndexPath: indexPath) 
         cell.textLabel?.numberOfLines = 2
         // Cellに値を設定する.
         cell.textLabel!.text = "\(items[indexPath.row])"
         cell.tag = seqNos[indexPath.row]
+//        cell.textLabel?.text = "\(dateTime[indexPath.row])"
         
         return cell
     }

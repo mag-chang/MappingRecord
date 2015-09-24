@@ -22,7 +22,7 @@ class Record: Object {
     dynamic var startDate: NSDate = NSDate()
     dynamic var endDate: NSDate = NSDate()
     dynamic var distance: Double = 0
-    dynamic var polyLine = List<PolylineArray>()
+    let polyLine = List<PolylineArray>()
     dynamic var average: Double = 0
     dynamic var createdDate: Double = 0
     dynamic var updatedDate: Double = 0

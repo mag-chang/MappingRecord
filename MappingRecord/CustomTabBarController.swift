@@ -25,7 +25,7 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate  {
         let myTabs = NSArray(objects: gmapViewTab,historyTab)
         
         // ViewControllerを設定する.
-        self.setViewControllers(myTabs as [AnyObject], animated: false)
+        self.setViewControllers(myTabs as? [UIViewController], animated: false)
         
     }
     
@@ -36,12 +36,12 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate  {
     
     //UITabBarControllerDelegateプロトコルを実装する
     func tabBarController(tabBarController: UITabBarController, shouldSelectViewController viewController: UIViewController) -> Bool {
-        println("shouldSelectViewController")
+        print("shouldSelectViewController")
         return true
-    }
+    };
     //UITabBarControllerDelegateプロトコルを実装する
     func tabBarController(tabBarController: UITabBarController, didSelectViewController viewController: UIViewController) {
-        println("didSelectViewController")
+        print("didSelectViewController")
     }
     
 }

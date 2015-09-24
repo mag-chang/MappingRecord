@@ -28,7 +28,7 @@ class GMapViewController: BaseViewController, CLLocationManagerDelegate {
     var sumDistance = Double()
     var infoTextLabel = UILabel()
     
-    let realm = Realm()         //Realm操作オブジェクト
+    let realm = try! Realm()         //Realm操作オブジェクト
     var myRecordSeqNo = Int()
     var startDate = NSDate()
     var polyLineList = [PolylineArray]()
@@ -43,7 +43,7 @@ class GMapViewController: BaseViewController, CLLocationManagerDelegate {
         latitude = CLLocationDegrees()
         mapView = GMSMapView()
         camera = GMSCameraPosition()
-        super.init(coder: aDecoder)
+        super.init(coder: aDecoder)!
     }
     
     override init(nibName nibNameOrNil: String!, bundle nibBundleOrNil: NSBundle!) {
@@ -74,7 +74,7 @@ class GMapViewController: BaseViewController, CLLocationManagerDelegate {
         
         // まだ認証が得られていない場合は、認証ダイアログを表示
         if status == CLAuthorizationStatus.NotDetermined {
-            println("didChangeAuthorizationStatus:\(status)");
+            print("didChangeAuthorizationStatus:\(status)");
             // まだ承認が得られていない場合は、認証ダイアログを表示
             self.lm.requestAlwaysAuthorization()
         }
@@ -108,7 +108,7 @@ class GMapViewController: BaseViewController, CLLocationManagerDelegate {
         lm.startUpdatingLocation()
         //       camera = GMSCameraPosition.cameraWithLatitude(-33.868,
         //            longitude:151.2086, zoom:15)
-        println("\(initLatitude),\(initLongitude)")     // Debug
+        print("\(initLatitude),\(initLongitude)")     // Debug
         // 現在の緯度経度でCamera定義（イミュータブル）
         camera = GMSCameraPosition.cameraWithLatitude(initLatitude,
             longitude:initLongitude, zoom:15)
@@ -137,7 +137,7 @@ class GMapViewController: BaseViewController, CLLocationManagerDelegate {
     
     
     // 位置情報取得成功時
-    func locationManager(manager: CLLocationManager!, didUpdateToLocation newLocation: CLLocation!, fromLocation oldLocation: CLLocation!){
+    func locationManager(manager: CLLocationManager, didUpdateToLocation newLocation: CLLocation, fromLocation oldLocation: CLLocation){
         
         // 取得した位置情報から経度を設定
         longitude = newLocation.coordinate.longitude
@@ -147,7 +147,7 @@ class GMapViewController: BaseViewController, CLLocationManagerDelegate {
         //            longitude:longitude, zoom:6)
         
         // 現在地のCLLocationCoordinate2Dを生成し、MapViewとMarkerの位置を変更
-        var location = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+        let location = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
         mapView.animateToLocation(location)
         marker.position = location
         
@@ -176,7 +176,7 @@ class GMapViewController: BaseViewController, CLLocationManagerDelegate {
         }
         
         // debug
-        println("sumDistance = " + sumDistance.description)
+        print("sumDistance = " + sumDistance.description)
         infoTextLabel.text = "Total : " + (NSString(format: "%.2f", sumDistance) as String) + "m"
         
         //        self.view.setNeedsDisplay()
@@ -215,7 +215,7 @@ class GMapViewController: BaseViewController, CLLocationManagerDelegate {
     //    }
     
     // 位置情報取得失敗時
-    func locationManager(manager: CLLocationManager!, didFailWithError error: NSError!) {
+    func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
         NSLog("Error while updating location. " + error.localizedDescription)
     }
     
@@ -225,9 +225,9 @@ class GMapViewController: BaseViewController, CLLocationManagerDelegate {
     
     // 位置情報から距離計算
     func calcLocationDistance(fromLocation: CLLocationCoordinate2D, toLocation: CLLocationCoordinate2D) -> (Double) {
-        var locationDistance: CLLocationDistance =
+        let locationDistance: CLLocationDistance =
         GMSGeometryDistance(fromLocation, toLocation)
-        println("distance = " + locationDistance.description)
+        print("distance = " + locationDistance.description)
         return locationDistance
     }
     
@@ -253,7 +253,7 @@ class GMapViewController: BaseViewController, CLLocationManagerDelegate {
     }
     
 
-    @IBAction override func onClickSpButton(sender: SpringButton) {
+    @IBAction func onClickSpButton(sender: SpringButton) {
     // SpringButtonにアニメーションを設定し実行後、マッピング開始フラグをオンorオフする。
         sender.animation = "pop"
         sender.animate()
@@ -274,14 +274,14 @@ class GMapViewController: BaseViewController, CLLocationManagerDelegate {
             }
             realm.beginWrite()
             realm.add(myRecord)
-            realm.commitWrite()
+            try! realm.commitWrite()
             polyLineList.removeAll()
         } else {
             self.mappingRestarted()
             self.polylineDrow()
             super.mappingStarted = true
             let predicate = NSPredicate(format: "seqNo = 999999")
-            var maxSeqNoRecords = realm.objects(Record).filter(predicate)
+            let maxSeqNoRecords = realm.objects(Record).filter(predicate)
             if (maxSeqNoRecords.count != 0) {
                 for maxSeqNoRecord in maxSeqNoRecords {
                     myRecordSeqNo = maxSeqNoRecord.seqNo + 1
@@ -293,7 +293,19 @@ class GMapViewController: BaseViewController, CLLocationManagerDelegate {
             startDate = NSDate()
         }
     }
-    
+
+//    @IBAction func onClickTableCell(sender: AnyObject) {
+//        //ここにHirtoryViewControllerから呼ばれた時のメソッドを記述
+//        //Realmからsenderをキーにデータを取得し、PolyLineを描画すると共に、現在地追従をやめる
+//        let predicate = NSPredicate(format: "createdDate = %@", sender as! [String])
+//        let selectedHistoryRecords = realm.objects(Record).filter(predicate)
+//        for (index, selectedHistoryRecord) in selectedHistoryRecords.enumerate() {
+//            var polyLineArray[Double, Double]
+//            selectedHistoryRecord.polyLine._rlmArray.objectAtIndex(UInt(index))
+//        }
+//        
+//
+//    }
 }
 
 

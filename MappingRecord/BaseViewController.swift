@@ -14,7 +14,7 @@ class BaseViewController: UIViewController {
     var mappingStarted = false
     
     func appendCenterButton() {
-        let spButton: SpringButton = (SpringButton.buttonWithType(UIButtonType.Custom) as? SpringButton)!
+        let spButton: SpringButton = (SpringButton(type: UIButtonType.Custom))
         
         let image: UIImage? = UIImage(named:"pencil.png")
         
@@ -27,18 +27,18 @@ class BaseViewController: UIViewController {
         self.tabBarController?.view.addSubview(spButton)
     }
 
-    @IBAction func onClickSpButton(sender: SpringButton) {
-        // SpringButtonにアニメーションを設定し実行後、マッピング開始フラグをオンorオフする。
-        sender.animation = "pop"
-        sender.animate()
-        //AppDelegateのインスタンスを取得
-        var appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        
-        //        if self.mappingStarted {
-//            mappingStarted = false
-//        } else {
-//            mappingStarted = true
-//        }
-    }
+//    @IBAction func onClickSpButton(sender: SpringButton) {
+//        // SpringButtonにアニメーションを設定し実行後、マッピング開始フラグをオンorオフする。
+//        sender.animation = "pop"
+//        sender.animate()
+//        //AppDelegateのインスタンスを取得
+//        var appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+//        
+//        //        if self.mappingStarted {
+////            mappingStarted = false
+////        } else {
+////            mappingStarted = true
+////        }
+//    }
     
 }
