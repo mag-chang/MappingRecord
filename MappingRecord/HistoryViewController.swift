@@ -36,8 +36,6 @@ class HistoryViewController: BaseViewController, UITableViewDelegate, UITableVie
 //    var items: Dictionary<Int,String> = [:]
     var items: Array<String> = []
     var seqNos: Array<Int> = []
-    // ↓SeqNoが特定できるまでの仮キー
-    var dateTime: Array<Double> = []
     
     let dateFormatter = NSDateFormatter()
     
@@ -45,8 +43,9 @@ class HistoryViewController: BaseViewController, UITableViewDelegate, UITableVie
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-//        super.appendCenterButton()
         
+        items.removeAll()
+        seqNos.removeAll()
         self.setItemsValue(self.getRecords())
         
         let barHeight: CGFloat = UIApplication.sharedApplication().statusBarFrame.size.height
@@ -69,10 +68,15 @@ class HistoryViewController: BaseViewController, UITableViewDelegate, UITableVie
         
         // Viewに追加する.
         self.view.addSubview(tableView)
+
+        // ステータスバー部分を白に置き換え。
+        let statusBarArea = UIView(frame: CGRect(x:0, y:0, width: displayWidth, height: barHeight))
+        statusBarArea.backgroundColor = UIColor.whiteColor()
+        self.view.addSubview(statusBarArea)
     }
     
     func getRecords() -> Results<Record> {
-        let records = try! Realm().objects(Record)
+        let records = try! Realm().objects(Record).sorted("startDate")
         return records
     }
     
@@ -80,11 +84,9 @@ class HistoryViewController: BaseViewController, UITableViewDelegate, UITableVie
         dateFormatter.locale = NSLocale(localeIdentifier: "ja_JP") // ロケールの設定
         dateFormatter.timeStyle = .ShortStyle
         dateFormatter.dateStyle = .ShortStyle
-//            items[record.seqNo] = record.distance.description
         for record in records {
             items.append("Date:\(dateFormatter.stringFromDate(record.startDate)) Total:\(record.distance.description)")
             seqNos.append(record.seqNo)
-            dateTime.append(record.createdDate)
         }
     }
 
@@ -96,9 +98,13 @@ class HistoryViewController: BaseViewController, UITableViewDelegate, UITableVie
     Cellが選択された際に呼び出されるデリゲートメソッド.
     */
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        // 表示するviewをmapviewに戻す
         self.tabBarController?.selectedIndex = 0
-        let seqNo = self.tableView.cellForRowAtIndexPath(indexPath)!.textLabel?.text
-//        self.tabBarController?.selectedViewController?.targetViewControllerForAction("aaa", sender: seqNo)
+
+        // テーブルセルのtagを取得し、gMapViewControllerへ渡す（tagがDBのユニークキー）
+        let seqNo = self.tableView.cellForRowAtIndexPath(indexPath)?.tag
+        let gMapViewContoroller = self.tabBarController?.selectedViewController as! GMapViewController
+        gMapViewContoroller.onClickTableCell(seqNo!)
     }
     
     /*
@@ -119,12 +125,11 @@ class HistoryViewController: BaseViewController, UITableViewDelegate, UITableVie
         let cell = tableView.dequeueReusableCellWithIdentifier("MyCell", forIndexPath: indexPath) 
         cell.textLabel?.numberOfLines = 2
         // Cellに値を設定する.
-        cell.textLabel!.text = "\(items[indexPath.row])"
+        cell.textLabel?.text = "\(items[indexPath.row])"
         cell.tag = seqNos[indexPath.row]
-//        cell.textLabel?.text = "\(dateTime[indexPath.row])"
         
         return cell
     }
-        
+ 
 }
 

@@ -36,12 +36,12 @@ class CustomTabBarController: UITabBarController, UITabBarControllerDelegate  {
     
     //UITabBarControllerDelegateプロトコルを実装する
     func tabBarController(tabBarController: UITabBarController, shouldSelectViewController viewController: UIViewController) -> Bool {
-        print("shouldSelectViewController")
+        historyTab.viewDidLoad()
         return true
     };
     //UITabBarControllerDelegateプロトコルを実装する
-    func tabBarController(tabBarController: UITabBarController, didSelectViewController viewController: UIViewController) {
-        print("didSelectViewController")
-    }
+//    func tabBarController(tabBarController: UITabBarController, didSelectViewController viewController: UIViewController) {
+//        print("didSelectViewController")
+//    }
     
 }

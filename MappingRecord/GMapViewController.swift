@@ -29,7 +29,7 @@ class GMapViewController: BaseViewController, CLLocationManagerDelegate {
     var infoTextLabel = UILabel()
     
     let realm = try! Realm()         //Realm操作オブジェクト
-    var myRecordSeqNo = Int()
+    var myRecordSeqNo = Int()        //Recordオブジェクトのユニークキー
     var startDate = NSDate()
     var polyLineList = [PolylineArray]()
     
@@ -37,7 +37,6 @@ class GMapViewController: BaseViewController, CLLocationManagerDelegate {
     required init(coder aDecoder: NSCoder) {
         // GoogleDevelopperのAPIキー
         // AppDelegateだと上手くいかない。（AppDelegateよりinitが先に呼ばれる？）
-//        GMSServices.provideAPIKey("AIzaSyAMJxlruTU8bBxQSSTFAR4gVfuINOuKS1M")
         lm = CLLocationManager()
         longitude = CLLocationDegrees()
         latitude = CLLocationDegrees()
@@ -93,22 +92,10 @@ class GMapViewController: BaseViewController, CLLocationManagerDelegate {
         // Dispose of any resources that can be recreated.
     }
     
-//    func setup() {
-//        GMSServices.provideAPIKey("AIzaSyAMJxlruTU8bBxQSSTFAR4gVfuINOuKS1M")
-//        lm = CLLocationManager()
-//        longitude = CLLocationDegrees()
-//        latitude = CLLocationDegrees()
-//        mapView = GMSMapView()
-//        camera = GMSCameraPosition()
-//    }
-    
     // GoogleMapの初期設定および生成を行う
     func googleMapInit(initLatitude: CLLocationDegrees, initLongitude: CLLocationDegrees) {
         // 現在地取得開始
         lm.startUpdatingLocation()
-        //       camera = GMSCameraPosition.cameraWithLatitude(-33.868,
-        //            longitude:151.2086, zoom:15)
-        print("\(initLatitude),\(initLongitude)")     // Debug
         // 現在の緯度経度でCamera定義（イミュータブル）
         camera = GMSCameraPosition.cameraWithLatitude(initLatitude,
             longitude:initLongitude, zoom:15)
@@ -143,8 +130,6 @@ class GMapViewController: BaseViewController, CLLocationManagerDelegate {
         longitude = newLocation.coordinate.longitude
         // 取得した位置情報から緯度を設定
         latitude = newLocation.coordinate.latitude
-        //        camera = GMSCameraPosition.cameraWithLatitude(latitude,
-        //            longitude:longitude, zoom:6)
         
         // 現在地のCLLocationCoordinate2Dを生成し、MapViewとMarkerの位置を変更
         let location = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
@@ -175,8 +160,6 @@ class GMapViewController: BaseViewController, CLLocationManagerDelegate {
             self.polylineDrow()
         }
         
-        // debug
-        print("sumDistance = " + sumDistance.description)
         infoTextLabel.text = "Total : " + (NSString(format: "%.2f", sumDistance) as String) + "m"
         
         //        self.view.setNeedsDisplay()
@@ -227,7 +210,6 @@ class GMapViewController: BaseViewController, CLLocationManagerDelegate {
     func calcLocationDistance(fromLocation: CLLocationCoordinate2D, toLocation: CLLocationCoordinate2D) -> (Double) {
         let locationDistance: CLLocationDistance =
         GMSGeometryDistance(fromLocation, toLocation)
-        print("distance = " + locationDistance.description)
         return locationDistance
     }
     
@@ -257,6 +239,7 @@ class GMapViewController: BaseViewController, CLLocationManagerDelegate {
     // SpringButtonにアニメーションを設定し実行後、マッピング開始フラグをオンorオフする。
         sender.animation = "pop"
         sender.animate()
+        self.lm.startUpdatingLocation()
         if (self.tabBarController?.selectedViewController != self) {
             self.tabBarController?.selectedViewController = self
         }
@@ -266,6 +249,7 @@ class GMapViewController: BaseViewController, CLLocationManagerDelegate {
             super.mappingStarted = false
             // realmにデータを保存
             let myRecord = Record()     //Realmのデータ保持オブジェクト
+            myRecord.seqNo = myRecordSeqNo
             myRecord.distance = sumDistance
             myRecord.endDate = NSDate()
             myRecord.createdDate = NSDate().timeIntervalSince1970
@@ -280,32 +264,53 @@ class GMapViewController: BaseViewController, CLLocationManagerDelegate {
             self.mappingRestarted()
             self.polylineDrow()
             super.mappingStarted = true
-            let predicate = NSPredicate(format: "seqNo = 999999")
-            let maxSeqNoRecords = realm.objects(Record).filter(predicate)
-            if (maxSeqNoRecords.count != 0) {
-                for maxSeqNoRecord in maxSeqNoRecords {
-                    myRecordSeqNo = maxSeqNoRecord.seqNo + 1
-                    break
-                }
-            } else {
-                myRecordSeqNo = 1
-            }
+//            let predicate = NSPredicate(format: "seqNo = 999999")
+////            let predicate = NSPredicate(format: "@max = %@", "seqNo")
+//            let maxSeqNoRecords = realm.objects(Record).filter(predicate)
+//            if (maxSeqNoRecords.count != 0) {
+//                for maxSeqNoRecord in maxSeqNoRecords {
+//                    myRecordSeqNo = maxSeqNoRecord.seqNo + 1
+//                    break
+//                }
+//            } else {
+//                myRecordSeqNo = 1
+//            }
+            // 暫定対応として、seqNoを1~1000の乱数で代用する
+            myRecordSeqNo = Int(arc4random() % 100);
+            // 暫定対応ここまで
             startDate = NSDate()
         }
     }
 
-//    @IBAction func onClickTableCell(sender: AnyObject) {
-//        //ここにHirtoryViewControllerから呼ばれた時のメソッドを記述
-//        //Realmからsenderをキーにデータを取得し、PolyLineを描画すると共に、現在地追従をやめる
-//        let predicate = NSPredicate(format: "createdDate = %@", sender as! [String])
-//        let selectedHistoryRecords = realm.objects(Record).filter(predicate)
-//        for (index, selectedHistoryRecord) in selectedHistoryRecords.enumerate() {
-//            var polyLineArray[Double, Double]
-//            selectedHistoryRecord.polyLine._rlmArray.objectAtIndex(UInt(index))
-//        }
-//        
-//
-//    }
+    @IBAction func onClickTableCell(sender: Int) {
+    //Realmからsenderをキーにデータを取得し、PolyLineを描画すると共に、現在地追従をやめる
+
+        var setLatitude = Double()      //データ取得後、表示する緯度
+        var setLongitude = Double()     //データ取得後、表示する経度
+        self.mappingRestarted()         //一旦情報を初期化
+
+        // 現在地追従を停止
+        lm.stopUpdatingLocation()
+
+        // 選択された履歴の情報をRealmからGet
+        let selectedHistoryRecords = realm.objects(Record).filter("seqNo = \(sender)")
+
+        // 取得したデータからpolyLineListを１つずつ取り出しtargetPathへ格納
+        for polyLineArray in selectedHistoryRecords[0].polyLine {
+            targetPath.addLatitude(polyLineArray.poliLineLatitude, longitude: polyLineArray.poliLineLongitude)
+            setLatitude = polyLineArray.poliLineLatitude
+            setLongitude = polyLineArray.poliLineLongitude
+        }
+
+        // 履歴の総距離を設定
+        sumDistance = selectedHistoryRecords[0].distance
+
+        // 履歴の終了地点にmapを合わせてから軌跡を描画
+        camera = GMSCameraPosition.cameraWithLatitude(setLatitude,
+            longitude:setLongitude, zoom:15)
+        mapView.camera = camera
+        poliLine.path = targetPath
+    }
 }
 
 
