@@ -12,6 +12,10 @@ import Spring
 class BaseViewController: UIViewController {
     
     var mappingStarted = false
+    let mapImageName = "map.png"
+    let historyImageName = "stopwatch.png"
+    let mapTabString = "Map"
+    let historyTabString = "History"
     
     func appendCenterButton() {
         let spButton: SpringButton = (SpringButton(type: UIButtonType.Custom))
@@ -27,18 +31,20 @@ class BaseViewController: UIViewController {
         self.tabBarController?.view.addSubview(spButton)
     }
 
-//    @IBAction func onClickSpButton(sender: SpringButton) {
-//        // SpringButtonにアニメーションを設定し実行後、マッピング開始フラグをオンorオフする。
-//        sender.animation = "pop"
-//        sender.animate()
-//        //AppDelegateのインスタンスを取得
-//        var appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-//        
-//        //        if self.mappingStarted {
-////            mappingStarted = false
-////        } else {
-////            mappingStarted = true
-////        }
-//    }
-    
+}
+
+extension UIImage {
+    func tint(color: UIColor, blendMode: CGBlendMode) -> UIImage {
+        let drawRect = CGRectMake(0.0, 0.0, size.width, size.height)
+        UIGraphicsBeginImageContextWithOptions(size, false, scale)
+        //let context = UIGraphicsGetCurrentContext()
+        //CGContextClipToMask(context, drawRect, CGImage)
+        color.setFill()
+        UIRectFill(drawRect)
+        drawInRect(drawRect, blendMode: blendMode, alpha: 1.0)
+        let tintedImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        tintedImage.imageWithRenderingMode(.AlwaysOriginal)
+        return tintedImage
+    }
 }

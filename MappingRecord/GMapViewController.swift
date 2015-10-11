@@ -46,15 +46,28 @@ class GMapViewController: BaseViewController, CLLocationManagerDelegate {
     }
     
     override init(nibName nibNameOrNil: String!, bundle nibBundleOrNil: NSBundle!) {
-        GMSServices.provideAPIKey("AIzaSyAMJxlruTU8bBxQSSTFAR4gVfuINOuKS1M")
+        var aDict: NSDictionary?
+        if let path = NSBundle.mainBundle().pathForResource("Info", ofType: "plist") {
+            aDict = NSDictionary(contentsOfFile: path)
+        }
+        // GMSServices.provideAPIKey(aDict!.objectForKey("GOOGLE_MAPS_API_KEY") as String)
+        if let dict = aDict {
+//            print("google maps api key = " + (dict.objectForKey("GOOGLE_MAPS_API_KEY") as! String))
+            GMSServices.provideAPIKey(dict.objectForKey("GOOGLE_MAPS_API_KEY") as! String)
+        }
         lm = CLLocationManager()
         longitude = CLLocationDegrees()
         latitude = CLLocationDegrees()
         mapView = GMSMapView()
         camera = GMSCameraPosition()
         super.init(nibName: nil, bundle: nil)
-        //tabBarItemのアイコンをFeaturedに、タグを1と定義する.
-        self.tabBarItem = UITabBarItem(tabBarSystemItem: UITabBarSystemItem.Featured, tag: 1)
+        //tabBarItemのアイコンを設定、タグを1と定義する.
+//        self.tabBarItem = UITabBarItem(tabBarSystemItem: UITabBarSystemItem.Featured, tag: 1)
+        let mapImageSelected: UIImage? = UIImage(named:mapImageName)?.imageWithRenderingMode(.AlwaysOriginal)
+        let mapImage: UIImage? = UIImage(named:mapImageName)?.imageWithRenderingMode(.AlwaysOriginal).tint(UIColor.grayColor(),
+            blendMode: .DestinationIn)
+        self.tabBarItem = UITabBarItem(title: mapTabString, image: mapImage, selectedImage: mapImageSelected)
+        self.tabBarItem.tag = 1
     }
     
     convenience init() {
@@ -98,7 +111,7 @@ class GMapViewController: BaseViewController, CLLocationManagerDelegate {
         lm.startUpdatingLocation()
         // 現在の緯度経度でCamera定義（イミュータブル）
         camera = GMSCameraPosition.cameraWithLatitude(initLatitude,
-            longitude:initLongitude, zoom:15)
+            longitude:initLongitude, zoom:17)
         // 定義したCameraからMapViewを生成
         mapView = GMSMapView.mapWithFrame(CGRectZero, camera:camera)
         // 現在地にマーカーを立てる
@@ -117,7 +130,7 @@ class GMapViewController: BaseViewController, CLLocationManagerDelegate {
         
         // マップ上に表示する移動距離などのviewを作成
         infoTextLabel = UILabel(frame: CGRect(x: 10,y: 30,width: 130,height: 20))
-        infoTextLabel.text = "Total : " + (NSString(format: "%.2f", sumDistance) as String) + "m"
+        infoTextLabel.text = "移動距離 : " + (NSString(format: "%.2f", sumDistance) as String) + "m"
         mapView.addSubview(infoTextLabel)
         self.view = mapView
     }
@@ -307,7 +320,7 @@ class GMapViewController: BaseViewController, CLLocationManagerDelegate {
 
         // 履歴の終了地点にmapを合わせてから軌跡を描画
         camera = GMSCameraPosition.cameraWithLatitude(setLatitude,
-            longitude:setLongitude, zoom:15)
+            longitude:setLongitude, zoom:17)
         mapView.camera = camera
         poliLine.path = targetPath
     }

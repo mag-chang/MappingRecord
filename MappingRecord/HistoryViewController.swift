@@ -16,8 +16,12 @@ class HistoryViewController: BaseViewController, UITableViewDelegate, UITableVie
     init() {
         super.init(nibName: nil, bundle: nil)
         
-        // tabBarItemのアイコンをFeaturedに、タグを2と定義する.
-        self.tabBarItem = UITabBarItem(tabBarSystemItem: UITabBarSystemItem.Featured, tag: 2)
+        // tabBarItemのアイコンを設定、タグを2と定義する.
+//        self.tabBarItem = UITabBarItem(tabBarSystemItem: UITabBarSystemItem.History, tag: 2)
+        let historyImageSelected: UIImage? = UIImage(named: historyImageName)?.imageWithRenderingMode(.AlwaysOriginal)
+        let historyImage: UIImage? = UIImage(named: historyImageName)?.imageWithRenderingMode(.AlwaysOriginal).tint(UIColor.grayColor(),
+            blendMode: .DestinationIn)
+        self.tabBarItem = UITabBarItem(title: historyTabString, image: historyImage, selectedImage: historyImageSelected)
     }
     
     required init(coder aDecoder: NSCoder) {
@@ -85,7 +89,7 @@ class HistoryViewController: BaseViewController, UITableViewDelegate, UITableVie
         dateFormatter.timeStyle = .ShortStyle
         dateFormatter.dateStyle = .ShortStyle
         for record in records {
-            items.append("Date:\(dateFormatter.stringFromDate(record.startDate)) Total:\(record.distance.description)")
+            items.append("日時:\(dateFormatter.stringFromDate(record.startDate)) \n移動距離:\(record.distance.description)")
             seqNos.append(record.seqNo)
         }
     }
