@@ -27,7 +27,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     */
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
-//        GMSServices.provideAPIKey("AIzaSyAMJxlruTU8bBxQSSTFAR4gVfuINOuKS1M")
         
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
         
