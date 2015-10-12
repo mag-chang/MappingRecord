@@ -18,6 +18,11 @@
 		780B23191B9B22350068CCE5 /* pencil.png in Resources */ = {isa = PBXBuildFile; fileRef = 780B23151B9B22350068CCE5 /* pencil.png */; };
 		784240741B9B256E00059B95 /* Record.swift in Sources */ = {isa = PBXBuildFile; fileRef = 784240731B9B256E00059B95 /* Record.swift */; };
 		7872C7DA1BA547E300B41B76 /* CustomTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7872C7D91BA547E300B41B76 /* CustomTabBarController.swift */; };
+		78D844D61BCA43B9006116EF /* pencil@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 78D844D51BCA43B9006116EF /* pencil@2x.png */; settings = {ASSET_TAGS = (); }; };
+		78D844D81BCA44C3006116EF /* map.png in Resources */ = {isa = PBXBuildFile; fileRef = 78D844D71BCA44C3006116EF /* map.png */; settings = {ASSET_TAGS = (); }; };
+		78D844DA1BCA461D006116EF /* stopwatch.png in Resources */ = {isa = PBXBuildFile; fileRef = 78D844D91BCA461D006116EF /* stopwatch.png */; settings = {ASSET_TAGS = (); }; };
+		78D844DC1BCA4651006116EF /* map@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 78D844DB1BCA4651006116EF /* map@2x.png */; settings = {ASSET_TAGS = (); }; };
+		78D844DE1BCA4681006116EF /* stopwatch@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 78D844DD1BCA4681006116EF /* stopwatch@2x.png */; settings = {ASSET_TAGS = (); }; };
 		8042F6C0D03F39D0B35E4647 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 21052CA22F2D8F799787B14F /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 /* End PBXBuildFile section */
 
@@ -48,6 +53,11 @@
 		780B23151B9B22350068CCE5 /* pencil.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pencil.png; sourceTree = "<group>"; };
 		784240731B9B256E00059B95 /* Record.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Record.swift; sourceTree = "<group>"; };
 		7872C7D91BA547E300B41B76 /* CustomTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTabBarController.swift; sourceTree = "<group>"; };
+		78D844D51BCA43B9006116EF /* pencil@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pencil@2x.png"; sourceTree = "<group>"; };
+		78D844D71BCA44C3006116EF /* map.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = map.png; sourceTree = "<group>"; };
+		78D844D91BCA461D006116EF /* stopwatch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stopwatch.png; sourceTree = "<group>"; };
+		78D844DB1BCA4651006116EF /* map@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "map@2x.png"; sourceTree = "<group>"; };
+		78D844DD1BCA4681006116EF /* stopwatch@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "stopwatch@2x.png"; sourceTree = "<group>"; };
 		D603B1E913B3520567D79E7F /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		F7AF217CB025B564D5977159 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -99,7 +109,6 @@
 				780B23131B9B22350068CCE5 /* GMapViewController.swift */,
 				784240731B9B256E00059B95 /* Record.swift */,
 				780B23141B9B22350068CCE5 /* HistoryViewController.swift */,
-				780B23151B9B22350068CCE5 /* pencil.png */,
 				780B22F21B9B21C50068CCE5 /* AppDelegate.swift */,
 				780B22F61B9B21C60068CCE5 /* Main.storyboard */,
 				780B22F91B9B21C60068CCE5 /* Images.xcassets */,
@@ -112,6 +121,12 @@
 		780B22F01B9B21C50068CCE5 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				780B23151B9B22350068CCE5 /* pencil.png */,
+				78D844D51BCA43B9006116EF /* pencil@2x.png */,
+				78D844D71BCA44C3006116EF /* map.png */,
+				78D844DB1BCA4651006116EF /* map@2x.png */,
+				78D844D91BCA461D006116EF /* stopwatch.png */,
+				78D844DD1BCA4681006116EF /* stopwatch@2x.png */,
 				780B22F11B9B21C50068CCE5 /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -236,9 +251,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				78D844D61BCA43B9006116EF /* pencil@2x.png in Resources */,
 				780B23191B9B22350068CCE5 /* pencil.png in Resources */,
 				780B22F81B9B21C60068CCE5 /* Main.storyboard in Resources */,
+				78D844DE1BCA4681006116EF /* stopwatch@2x.png in Resources */,
 				780B22FD1B9B21C60068CCE5 /* LaunchScreen.xib in Resources */,
+				78D844D81BCA44C3006116EF /* map.png in Resources */,
+				78D844DC1BCA4651006116EF /* map@2x.png in Resources */,
+				78D844DA1BCA461D006116EF /* stopwatch.png in Resources */,
 				780B22FA1B9B21C60068CCE5 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -442,9 +462,58 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = "\"$(PODS_ROOT)/GoogleMaps/Frameworks\"";
 				INFOPLIST_FILE = MappingRecord/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.test.MyFirstApp.$(PRODUCT_NAME:rfc1034identifier)";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-l\"c++\"",
+					"-l\"icucore\"",
+					"-l\"z\"",
+					"-framework",
+					"\"AVFoundation\"",
+					"-framework",
+					"\"Accelerate\"",
+					"-framework",
+					"\"CoreBluetooth\"",
+					"-framework",
+					"\"CoreData\"",
+					"-framework",
+					"\"CoreGraphics\"",
+					"-framework",
+					"\"CoreLocation\"",
+					"-framework",
+					"\"CoreText\"",
+					"-framework",
+					"\"GLKit\"",
+					"-framework",
+					"\"GoogleMaps\"",
+					"-framework",
+					"\"ImageIO\"",
+					"-framework",
+					"\"MCSwipeTableViewCell\"",
+					"-framework",
+					"\"OpenGLES\"",
+					"-framework",
+					"\"QuartzCore\"",
+					"-framework",
+					"\"Realm\"",
+					"-framework",
+					"\"RealmSwift\"",
+					"-framework",
+					"\"SMCalloutView\"",
+					"-framework",
+					"\"SVProgressHUD\"",
+					"-framework",
+					"\"Security\"",
+					"-framework",
+					"\"Spring\"",
+					"-framework",
+					"\"SystemConfiguration\"",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.test.MyFirstApp.MappingRecord;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};
@@ -458,9 +527,57 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = "\"$(PODS_ROOT)/GoogleMaps/Frameworks\"";
 				INFOPLIST_FILE = MappingRecord/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.test.MyFirstApp.$(PRODUCT_NAME:rfc1034identifier)";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-l\"c++\"",
+					"-l\"icucore\"",
+					"-l\"z\"",
+					"-framework",
+					"\"AVFoundation\"",
+					"-framework",
+					"\"Accelerate\"",
+					"-framework",
+					"\"CoreBluetooth\"",
+					"-framework",
+					"\"CoreData\"",
+					"-framework",
+					"\"CoreGraphics\"",
+					"-framework",
+					"\"CoreLocation\"",
+					"-framework",
+					"\"CoreText\"",
+					"-framework",
+					"\"GLKit\"",
+					"-framework",
+					"\"GoogleMaps\"",
+					"-framework",
+					"\"ImageIO\"",
+					"-framework",
+					"\"MCSwipeTableViewCell\"",
+					"-framework",
+					"\"OpenGLES\"",
+					"-framework",
+					"\"QuartzCore\"",
+					"-framework",
+					"\"Realm\"",
+					"-framework",
+					"\"RealmSwift\"",
+					"-framework",
+					"\"SMCalloutView\"",
+					"-framework",
+					"\"SVProgressHUD\"",
+					"-framework",
+					"\"Security\"",
+					"-framework",
+					"\"Spring\"",
+					"-framework",
+					"\"SystemConfiguration\"",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.test.MyFirstApp.MappingRecord;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 			};

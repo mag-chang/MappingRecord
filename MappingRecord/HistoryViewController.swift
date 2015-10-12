@@ -43,6 +43,7 @@ class HistoryViewController: BaseViewController, UITableViewDelegate, UITableVie
     
     let dateFormatter = NSDateFormatter()
     
+    let realm = try! Realm()         //Realm操作オブジェクト
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -89,7 +90,8 @@ class HistoryViewController: BaseViewController, UITableViewDelegate, UITableVie
         dateFormatter.timeStyle = .ShortStyle
         dateFormatter.dateStyle = .ShortStyle
         for record in records {
-            items.append("日時:\(dateFormatter.stringFromDate(record.startDate)) \n移動距離:\(record.distance.description)")
+            let dispDistance = round(record.distance * 100.0) / 100.0
+            items.append("日時:\(dateFormatter.stringFromDate(record.startDate)) \n移動距離:\(dispDistance.description)m")
             seqNos.append(record.seqNo)
         }
     }
@@ -126,7 +128,7 @@ class HistoryViewController: BaseViewController, UITableViewDelegate, UITableVie
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         // 再利用するCellを取得する.
-        let cell = tableView.dequeueReusableCellWithIdentifier("MyCell", forIndexPath: indexPath) 
+        let cell = tableView.dequeueReusableCellWithIdentifier("MyCell", forIndexPath: indexPath)
         cell.textLabel?.numberOfLines = 2
         // Cellに値を設定する.
         cell.textLabel?.text = "\(items[indexPath.row])"
@@ -134,6 +136,29 @@ class HistoryViewController: BaseViewController, UITableViewDelegate, UITableVie
         
         return cell
     }
- 
+    
+    /*
+    Cellがスワイプされた時の挙動を記述するメソッド
+    */
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        if editingStyle == .Delete {
+            let selectedCellseqNo = self.tableView.cellForRowAtIndexPath(indexPath)?.tag
+            print(selectedCellseqNo)
+            self.deleteMappingRecord(selectedCellseqNo!)
+            items.removeAll()
+            seqNos.removeAll()
+            self.setItemsValue(self.getRecords())
+            tableView.reloadData()
+        }
+    }
+    
+    // 引数のSeqNoのレコードを削除
+    func deleteMappingRecord(targetSeqNo: Int) {
+        // 選択された履歴の情報をRealmからGet
+        let selectedHistoryRecord = realm.objects(Record).filter("seqNo = \(targetSeqNo)")
+        try! realm.write {
+            self.realm.delete(selectedHistoryRecord)
+        }
+    }
 }
 

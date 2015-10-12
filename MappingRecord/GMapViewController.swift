@@ -129,8 +129,9 @@ class GMapViewController: BaseViewController, CLLocationManagerDelegate {
         }
         
         // マップ上に表示する移動距離などのviewを作成
-        infoTextLabel = UILabel(frame: CGRect(x: 10,y: 30,width: 130,height: 20))
-        infoTextLabel.text = "移動距離 : " + (NSString(format: "%.2f", sumDistance) as String) + "m"
+        infoTextLabel = UILabel(frame: CGRect(x: 10,y: 30,width: 180,height: 20))
+        let dispSumDistance = round(sumDistance * 100.0) / 100.0
+        infoTextLabel.text = "移動距離 : \(dispSumDistance.description)m"
         mapView.addSubview(infoTextLabel)
         self.view = mapView
     }
@@ -173,7 +174,8 @@ class GMapViewController: BaseViewController, CLLocationManagerDelegate {
             self.polylineDrow()
         }
         
-        infoTextLabel.text = "Total : " + (NSString(format: "%.2f", sumDistance) as String) + "m"
+        let dispSumDistance = round(sumDistance * 100.0) / 100.0
+        infoTextLabel.text = "移動距離 : \(dispSumDistance.description)m"
         
         //        self.view.setNeedsDisplay()
         
